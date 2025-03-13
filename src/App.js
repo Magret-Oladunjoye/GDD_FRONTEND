@@ -13,7 +13,6 @@ const GDDApp = () => {
   const [location, setLocation] = useState("Larnaca");
   const [baseTemp, setBaseTemp] = useState(10);
   const [startDate, setStartDate] = useState("");
-  const [gddData, setGddData] = useState([]);
   const [totalGdd, setTotalGdd] = useState(0);
   const [growthStage, setGrowthStage] = useState("");
   const [temperatureData, setTemperatureData] = useState([]);
@@ -37,8 +36,6 @@ const GDDApp = () => {
           setError(data.error);
           return;
         }
-
-        setGddData(data.daily_gdd || []);
         setTotalGdd(data.total_gdd || 0);
         setGrowthStage(data.growth_stage || "Unknown Stage");
 
