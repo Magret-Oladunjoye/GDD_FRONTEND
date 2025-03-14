@@ -26,7 +26,7 @@ const GDDApp = () => {
     setError("");
 
     fetch(
-      `http://localhost:5000/gdd?location=${location}&base_temp=${baseTemp}&start_date=${startDate}`
+      `http://localhost:5000/gdd-sw.onrender.com/?location=${location}&base_temp=${baseTemp}&start_date=${startDate}`
     )
       .then((response) => response.json())
       .then((data) => {
@@ -62,7 +62,7 @@ const GDDApp = () => {
   return (
     <div style={{ padding: "20px", fontFamily: "Arial, sans-serif", backgroundColor: "#e6f7e6",  // Light green background
       minHeight: "100vh"}}>
-      <h1>Growing Degree Days (GDD) Tracker</h1>
+      <h1>DeepFarm - Growing Degree Days (GDD) Tracker</h1>
 
       {/* Input Form */}
       <div style={{ marginBottom: "20px" }}>
