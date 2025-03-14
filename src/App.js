@@ -26,7 +26,7 @@ const GDDApp = () => {
     setError("");
 
     fetch(
-      `http://gdd-sw.onrender.com/gdd?location=${location}&base_temp=${baseTemp}&start_date=${startDate}`
+      `https://gdd-sw.onrender.com/gdd?location=${location}&base_temp=${baseTemp}&start_date=${startDate}`
     )
       .then((response) => response.json())
       .then((data) => {
