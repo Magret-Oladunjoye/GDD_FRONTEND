@@ -7,6 +7,7 @@ import {
   Tooltip,
   CartesianGrid,
   ResponsiveContainer,
+  Legend,
 } from "recharts";
 
 const GDDApp = () => {
@@ -60,38 +61,22 @@ const GDDApp = () => {
   }, [location, baseTemp, startDate]);
 
   return (
-    <div style={{ padding: "20px", fontFamily: "Arial, sans-serif", backgroundColor: "#e6f7e6",  // Light green background
-      minHeight: "100vh"}}>
+    <div style={{ padding: "20px", fontFamily: "Arial, sans-serif", backgroundColor: "#e6f7e6", minHeight: "100vh" }}>
       <h1>DeepFarm - Growing Degree Days (GDD) Tracker</h1>
 
       {/* Input Form */}
       <div style={{ marginBottom: "20px" }}>
         <label>
           Location:
-          <input
-            type="text"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            style={{ marginLeft: "10px" }}
-          />
+          <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} style={{ marginLeft: "10px" }} />
         </label>
         <label style={{ marginLeft: "20px" }}>
           Base Temperature (°C):
-          <input
-            type="number"
-            value={baseTemp}
-            onChange={(e) => setBaseTemp(e.target.value)}
-            style={{ marginLeft: "10px" }}
-          />
+          <input type="number" value={baseTemp} onChange={(e) => setBaseTemp(Number(e.target.value))} style={{ marginLeft: "10px" }} />
         </label>
         <label style={{ marginLeft: "20px" }}>
           Planting Date:
-          <input
-            type="date"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-            style={{ marginLeft: "10px" }}
-          />
+          <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} style={{ marginLeft: "10px" }} />
         </label>
       </div>
 
@@ -106,15 +91,19 @@ const GDDApp = () => {
         </div>
       )}
 
-      {/* GDD Line Chart */}
-      <h3>GDD Progression Over Time</h3>
+      {/* GDD & Temperature Line Chart */}
+      <h3>GDD & Temperature Progression Over Time</h3>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={temperatureData}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="date" />
-          <YAxis />
+          <YAxis yAxisId="left" label={{ value: "GDD", angle: -90, position: "insideLeft" }} />
+          <YAxis yAxisId="right" orientation="right" label={{ value: "Temperature (°C)", angle: -90, position: "insideRight" }} />
           <Tooltip />
-          <Line type="monotone" dataKey="gdd" stroke="#8884d8" strokeWidth={2} />
+          <Legend />
+          <Line yAxisId="left" type="monotone" dataKey="gdd" stroke="#8884d8" strokeWidth={2} />
+          <Line yAxisId="right" type="monotone" dataKey="min_temp" stroke="#82ca9d" strokeWidth={2} />
+          <Line yAxisId="right" type="monotone" dataKey="max_temp" stroke="#ff7300" strokeWidth={2} />
         </LineChart>
       </ResponsiveContainer>
 
@@ -133,15 +122,9 @@ const GDDApp = () => {
           {temperatureData.map((d, index) => (
             <tr key={index}>
               <td style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>{d.date}</td>
-              <td style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>
-                {d.gdd !== undefined ? d.gdd.toFixed(2) : "N/A"}
-              </td>
-              <td style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>
-                {d.min_temp !== undefined ? d.min_temp.toFixed(2) + "°C" : "N/A"}
-              </td>
-              <td style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>
-                {d.max_temp !== undefined ? d.max_temp.toFixed(2) + "°C" : "N/A"}
-              </td>
+              <td style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>{d.gdd?.toFixed(2) || "N/A"}</td>
+              <td style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>{d.min_temp?.toFixed(2) + "°C" || "N/A"}</td>
+              <td style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>{d.max_temp?.toFixed(2) + "°C" || "N/A"}</td>
             </tr>
           ))}
         </tbody>
