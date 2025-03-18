@@ -26,9 +26,14 @@ const GDDApp = () => {
     setLoading(true);
     setError("");
 
-    fetch(
-      `https://gdd-sw.onrender.com/gdd?location=${location}&base_temp=${baseTemp}&start_date=${startDate}`
-    )
+    fetch(`https://gdd-sw.onrender.com/gdd?location=${location}&base_temp=${baseTemp}&start_date=${startDate}`, {
+  method: "GET",
+  mode: "cors",
+  headers: {
+    "Content-Type": "application/json"
+  }
+})
+
       .then((response) => response.json())
       .then((data) => {
         console.log("Backend Response:", data);
