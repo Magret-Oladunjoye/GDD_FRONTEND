@@ -124,8 +124,8 @@ const GDDApp = () => {
           <tr style={{ backgroundColor: "#f2f2f2" }}>
             <th style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>Date</th>
             <th style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>Daily GDD</th>
-            <th style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>Morning Temp (°C)</th>
-            <th style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>Afternoon Temp (°C)</th>
+            <th style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>Min Temp (°C)</th>
+            <th style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>Max Temp (°C)</th>
           </tr>
         </thead>
         <tbody>
