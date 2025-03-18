@@ -15,6 +15,7 @@ const GDDApp = () => {
   const [baseTemp, setBaseTemp] = useState(10);
   const [startDate, setStartDate] = useState("");
   const [totalGdd, setTotalGdd] = useState(0);
+  const [growthStage, setGrowthStage] = useState(""); // NEW: Store growth stage
   const [temperatureData, setTemperatureData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -35,13 +36,14 @@ const GDDApp = () => {
           return;
         }
         setTotalGdd(data.total_gdd || 0);
+        setGrowthStage(data.growth_stage || "Unknown Stage"); // NEW: Store growth stage
 
         if (data.temperature_debug) {
           setTemperatureData(
             data.temperature_debug.map((entry) => ({
               date: entry.date,
-              min_temp: entry.tmin, // Correct reference from backend
-              max_temp: entry.tmax, // Correct reference from backend
+              min_temp: entry.tmin,
+              max_temp: entry.tmax,
               gdd: entry.gdd,
             }))
           );
@@ -96,8 +98,9 @@ const GDDApp = () => {
 
       {/* GDD Summary */}
       {!loading && !error && totalGdd > 0 && (
-        <div style={{ marginBottom: "20px" }}>
+        <div style={{ marginBottom: "20px", padding: "10px", backgroundColor: "#d4edda", borderRadius: "5px" }}>
           <h3>Total GDD: {totalGdd.toFixed(2)}</h3>
+          <h4>🌱 Current Growth Stage: <strong>{growthStage}</strong></h4> {/* 🔥 NEW: Display growth stage */}
         </div>
       )}
 
