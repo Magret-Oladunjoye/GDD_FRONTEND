@@ -44,8 +44,8 @@ const GDDApp = () => {
           setTemperatureData(
             data.temperature_debug.map((entry) => ({
               date: entry.date,
-              min_temp: entry.tmin,
-              max_temp: entry.tmax,
+              morning_temp: entry.morning_temp, // Updated field
+              afternoon_temp: entry.afternoon_temp, // Updated field
               gdd: entry.gdd,
             }))
           );
@@ -102,8 +102,8 @@ const GDDApp = () => {
           <Tooltip />
           <Legend />
           <Line yAxisId="left" type="monotone" dataKey="gdd" stroke="#8884d8" strokeWidth={2} />
-          <Line yAxisId="right" type="monotone" dataKey="min_temp" stroke="#82ca9d" strokeWidth={2} />
-          <Line yAxisId="right" type="monotone" dataKey="max_temp" stroke="#ff7300" strokeWidth={2} />
+          <Line yAxisId="right" type="monotone" dataKey="morning_temp" stroke="#82ca9d" strokeWidth={2} />
+          <Line yAxisId="right" type="monotone" dataKey="afternoon_temp" stroke="#ff7300" strokeWidth={2} />
         </LineChart>
       </ResponsiveContainer>
 
@@ -114,8 +114,8 @@ const GDDApp = () => {
           <tr style={{ backgroundColor: "#f2f2f2" }}>
             <th style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>Date</th>
             <th style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>Daily GDD</th>
-            <th style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>Min Temp (°C)</th>
-            <th style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>Max Temp (°C)</th>
+            <th style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>Morning Temp (°C)</th>
+            <th style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>Afternoon Temp (°C)</th>
           </tr>
         </thead>
         <tbody>
@@ -123,8 +123,8 @@ const GDDApp = () => {
             <tr key={index}>
               <td style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>{d.date}</td>
               <td style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>{d.gdd?.toFixed(2) || "N/A"}</td>
-              <td style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>{d.min_temp?.toFixed(2) + "°C" || "N/A"}</td>
-              <td style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>{d.max_temp?.toFixed(2) + "°C" || "N/A"}</td>
+              <td style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>{d.morning_temp?.toFixed(2) + "°C" || "N/A"}</td>
+              <td style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>{d.afternoon_temp?.toFixed(2) + "°C" || "N/A"}</td>
             </tr>
           ))}
         </tbody>
