@@ -40,8 +40,8 @@ const GDDApp = () => {
           setTemperatureData(
             data.temperature_debug.map((entry) => ({
               date: entry.date,
-              min_temp: entry.tmin, // Changed from morning_temp
-              max_temp: entry.tmax, // Changed from afternoon_temp
+              min_temp: entry.tmin, // Correct reference from backend
+              max_temp: entry.tmax, // Correct reference from backend
               gdd: entry.gdd,
             }))
           );
@@ -133,8 +133,8 @@ const GDDApp = () => {
             <tr key={index}>
               <td style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>{d.date}</td>
               <td style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>{d.gdd?.toFixed(2) || "N/A"}</td>
-              <td style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>{d.morning_temp?.toFixed(2) + "°C" || "N/A"}</td>
-              <td style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>{d.afternoon_temp?.toFixed(2) + "°C" || "N/A"}</td>
+              <td style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>{d.min_temp?.toFixed(2) + "°C" || "N/A"}</td>
+              <td style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>{d.max_temp?.toFixed(2) + "°C" || "N/A"}</td>
             </tr>
           ))}
         </tbody>
