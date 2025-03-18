@@ -15,7 +15,6 @@ const GDDApp = () => {
   const [baseTemp, setBaseTemp] = useState(10);
   const [startDate, setStartDate] = useState("");
   const [totalGdd, setTotalGdd] = useState(0);
-  const [growthStage, setGrowthStage] = useState("");
   const [temperatureData, setTemperatureData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -26,15 +25,8 @@ const GDDApp = () => {
     setLoading(true);
     setError("");
 
-    fetch(
-      `https://gdd-sw.onrender.com/gdd?location=${location}&base_temp=${baseTemp}&start_date=${startDate}`
-    )
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP Error! Status: ${response.status}`);
-        }
-        return response.json();
-      })
+    fetch(`https://gdd-sw.onrender.com/gdd?location=${location}&base_temp=${baseTemp}&start_date=${startDate}`)
+      .then((response) => response.json())
       .then((data) => {
         console.log("Backend Response:", data);
 
@@ -42,16 +34,14 @@ const GDDApp = () => {
           setError(data.error);
           return;
         }
-
         setTotalGdd(data.total_gdd || 0);
-        setGrowthStage(data.growth_stage || "Unknown Stage");
 
-        if (data.temperature_debug && Array.isArray(data.temperature_debug)) {
+        if (data.temperature_debug) {
           setTemperatureData(
             data.temperature_debug.map((entry) => ({
               date: entry.date,
-              tmin: entry.tmin, // Backend provides "tmin"
-              tmax: entry.tmax, // Backend provides "tmax"
+              morning_temp: entry.morning_temp,
+              afternoon_temp: entry.afternoon_temp,
               gdd: entry.gdd,
             }))
           );
@@ -74,15 +64,30 @@ const GDDApp = () => {
       <div style={{ marginBottom: "20px" }}>
         <label>
           Location:
-          <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} style={{ marginLeft: "10px" }} />
+          <input
+            type="text"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            style={{ marginLeft: "10px" }}
+          />
         </label>
         <label style={{ marginLeft: "20px" }}>
           Base Temperature (°C):
-          <input type="number" value={baseTemp} onChange={(e) => setBaseTemp(Number(e.target.value))} style={{ marginLeft: "10px" }} />
+          <input
+            type="number"
+            value={baseTemp}
+            onChange={(e) => setBaseTemp(Number(e.target.value))}
+            style={{ marginLeft: "10px" }}
+          />
         </label>
         <label style={{ marginLeft: "20px" }}>
           Planting Date:
-          <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} style={{ marginLeft: "10px" }} />
+          <input
+            type="date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            style={{ marginLeft: "10px" }}
+          />
         </label>
       </div>
 
@@ -93,7 +98,6 @@ const GDDApp = () => {
       {!loading && !error && totalGdd > 0 && (
         <div style={{ marginBottom: "20px" }}>
           <h3>Total GDD: {totalGdd.toFixed(2)}</h3>
-          <h4>Current Growth Stage: {growthStage}</h4>
         </div>
       )}
 
@@ -108,8 +112,8 @@ const GDDApp = () => {
           <Tooltip />
           <Legend />
           <Line yAxisId="left" type="monotone" dataKey="gdd" stroke="#8884d8" strokeWidth={2} />
-          <Line yAxisId="right" type="monotone" dataKey="tmin" stroke="#82ca9d" strokeWidth={2} />
-          <Line yAxisId="right" type="monotone" dataKey="tmax" stroke="#ff7300" strokeWidth={2} />
+          <Line yAxisId="right" type="monotone" dataKey="morning_temp" stroke="#82ca9d" strokeWidth={2} />
+          <Line yAxisId="right" type="monotone" dataKey="afternoon_temp" stroke="#ff7300" strokeWidth={2} />
         </LineChart>
       </ResponsiveContainer>
 
@@ -120,8 +124,8 @@ const GDDApp = () => {
           <tr style={{ backgroundColor: "#f2f2f2" }}>
             <th style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>Date</th>
             <th style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>Daily GDD</th>
-            <th style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>Min Temp (°C)</th>
-            <th style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>Max Temp (°C)</th>
+            <th style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>Morning Temp (°C)</th>
+            <th style={{ padding: "10px", borderBottom: "1px solid #ddd" }}>Afternoon Temp (°C)</th>
           </tr>
         </thead>
         <tbody>
@@ -129,8 +133,8 @@ const GDDApp = () => {
             <tr key={index}>
               <td style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>{d.date}</td>
               <td style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>{d.gdd?.toFixed(2) || "N/A"}</td>
-              <td style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>{d.tmin?.toFixed(2) + "°C" || "N/A"}</td>
-              <td style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>{d.tmax?.toFixed(2) + "°C" || "N/A"}</td>
+              <td style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>{d.morning_temp?.toFixed(2) + "°C" || "N/A"}</td>
+              <td style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>{d.afternoon_temp?.toFixed(2) + "°C" || "N/A"}</td>
             </tr>
           ))}
         </tbody>
