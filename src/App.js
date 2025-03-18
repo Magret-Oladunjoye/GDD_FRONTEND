@@ -40,8 +40,8 @@ const GDDApp = () => {
           setTemperatureData(
             data.temperature_debug.map((entry) => ({
               date: entry.date,
-              morning_temp: entry.morning_temp,
-              afternoon_temp: entry.afternoon_temp,
+              min_temp: entry.tmin, // Changed from morning_temp
+              max_temp: entry.tmax, // Changed from afternoon_temp
               gdd: entry.gdd,
             }))
           );
@@ -112,8 +112,8 @@ const GDDApp = () => {
           <Tooltip />
           <Legend />
           <Line yAxisId="left" type="monotone" dataKey="gdd" stroke="#8884d8" strokeWidth={2} />
-          <Line yAxisId="right" type="monotone" dataKey="morning_temp" stroke="#82ca9d" strokeWidth={2} />
-          <Line yAxisId="right" type="monotone" dataKey="afternoon_temp" stroke="#ff7300" strokeWidth={2} />
+          <Line yAxisId="right" type="monotone" dataKey="min_temp" stroke="#82ca9d" />
+          <Line yAxisId="right" type="monotone" dataKey="max_temp" stroke="#ff7300" />
         </LineChart>
       </ResponsiveContainer>
 
